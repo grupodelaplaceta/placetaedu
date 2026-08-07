@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { Search, Loader2, BookOpen, User, Calendar, MapPin, CheckCircle, Clock, Download, FileText, ShieldCheck, Info, Award, Globe, Lock } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { cn } from '../lib/utils';
+import { getScheduleSlot } from '../lib/data';
 import { generatePreEnrollmentPDF, generateEnrollmentPDF } from '../lib/pdfGenerator';
 
 export default function Tracking() {
@@ -191,6 +192,12 @@ export default function Tracking() {
                         Programa Solicitado {result.callNumber && `• Convocatoria ${result.callNumber}`}
                       </div>
                       <h3 className="text-xl font-black text-slate-900">{result.courseTitle}</h3>
+                      {result.franjaLabel && (
+                        <div className="mt-2.5 inline-flex items-center gap-2 bg-primary/5 border border-primary/20 rounded-xl px-3 py-1.5">
+                          <span className="text-sm">{getScheduleSlot(result.franja)?.emoji || '🕒'}</span>
+                          <span className="text-[10px] font-black text-primary uppercase tracking-wider">Franja: {result.franjaLabel}</span>
+                        </div>
+                      )}
                     </div>
                     <div className="flex gap-2">
                        <button 

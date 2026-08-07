@@ -31,7 +31,7 @@ import {
   Info
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { SCORING_CRITERIA } from '../lib/data';
+import { SCORING_CRITERIA, getScheduleSlot } from '../lib/data';
 import { type Course } from '../components/CourseCard';
 import { useAuth } from '../lib/auth';
 import { generatePreEnrollmentPDF, generateEnrollmentPDF, getEnrollmentEmailTemplate, getCompletionEmailTemplate, generateCourseGroupReportPDF } from '../lib/pdfGenerator';
@@ -438,6 +438,14 @@ export default function Admin() {
                     <div className="text-base font-bold text-slate-900 truncate">{reg.name}</div>
                     <div className="flex items-center gap-2 text-[10px] text-slate-400 font-bold uppercase tracking-wider">
                       <span>{reg.courseTitle}</span>
+                      {reg.franjaLabel && (
+                        <>
+                          <span className="text-primary flex items-center gap-1 normal-case font-black">
+                            <span>{getScheduleSlot(reg.franja)?.emoji || '🕒'}</span>
+                            <span className="truncate max-w-[140px]">{reg.franjaLabel.split('·')[0]}</span>
+                          </span>
+                        </>
+                      )}
                       <span>•</span>
                       <span>{reg.date}</span>
                     </div>
@@ -539,6 +547,18 @@ export default function Admin() {
                       <div className="text-sm font-bold text-slate-900 truncate">{selectedReg.dni}</div>
                     </div>
                   </div>
+
+                  {selectedReg.franjaLabel && (
+                    <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center gap-3">
+                      <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl">
+                        {getScheduleSlot(selectedReg.franja)?.emoji || '🕒'}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Franja de Días</div>
+                        <div className="text-xs font-bold text-slate-900 leading-snug">{selectedReg.franjaLabel}</div>
+                      </div>
+                    </div>
+                  )}
                   
                   <div className="bg-slate-50 p-6 rounded-[2rem] border border-slate-100 shadow-inner">
                     <div className="flex items-center justify-between mb-4">

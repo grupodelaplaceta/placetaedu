@@ -217,7 +217,7 @@ router.patch("/:code/penalty", async (req, res) => {
 // Update registration documents by student
 router.patch("/:code/docs", async (req, res) => {
   const { code } = req.params;
-  const { criterias, files, points } = req.body;
+  const { criterias, files, points, franja, franjaLabel } = req.body;
   
   try {
     const student = await StudentModel.findOne({ code } as any);
@@ -233,6 +233,8 @@ router.patch("/:code/docs", async (req, res) => {
     if (criterias) student.criterias = criterias;
     if (files) student.files = files;
     if (points !== undefined) student.points = points;
+    if (franja !== undefined) student.franja = franja;
+    if (franjaLabel !== undefined) student.franjaLabel = franjaLabel;
 
     await student.save();
     res.json(student);

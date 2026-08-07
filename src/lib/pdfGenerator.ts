@@ -59,6 +59,7 @@ export const generatePreEnrollmentPDF = (registration: any) => {
 
   const courseData = [
     ['Itinerario', registration.courseTitle || registration.title],
+    ['Franja de Días', registration.franjaLabel || 'A elegir en solicitud'],
     ['Convocatoria', registration.callNumber || 'Activa'],
     ['Proveedor / Plataforma', registration.provider || registration.institution || 'Grupo de La Placeta'],
     ['Modalidad', '100% Online con Tutorización'],

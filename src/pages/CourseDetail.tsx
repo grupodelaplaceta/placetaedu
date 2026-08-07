@@ -2,9 +2,10 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, Clock, GraduationCap, Users, ShieldCheck, CheckCircle2, Bookmark } from 'lucide-react';
+import { ArrowLeft, Clock, GraduationCap, Users, ShieldCheck, CheckCircle2, Bookmark, CalendarRange } from 'lucide-react';
 import { type Course } from '../components/CourseCard';
 import EnrollModal from '../components/EnrollModal';
+import ScheduleSlotPicker from '../components/ScheduleSlotPicker';
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -164,6 +165,33 @@ export default function CourseDetail() {
                 </ul>
               </div>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-white rounded-[2rem] p-8 border border-slate-200 shadow-sm"
+            >
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-11 h-11 rounded-2xl bg-primary/10 flex items-center justify-center">
+                  <CalendarRange className="w-5 h-5 text-primary" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-slate-900 leading-tight">Elige tu franja de días</h3>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">Disponibilidad flexible · lista establecida</p>
+                </div>
+              </div>
+              <p className="text-sm text-slate-500 font-medium leading-relaxed mt-5 mb-5">
+                Tú decides cuándo cursar. Al enviar tu solicitud podrás marcar la franja que mejor encaje con tu día a día:
+              </p>
+              <ScheduleSlotPicker value="" onChange={() => {}} preview />
+              <div className="mt-5 flex items-start gap-3 bg-amber-50/60 border border-amber-100 rounded-2xl p-4">
+                <span className="text-lg">💡</span>
+                <p className="text-[11px] text-amber-800 font-medium leading-relaxed">
+                  Tu franja preferida se confirma junto a la plaza según disponibilidad. Si necesitas cambiarla antes de la validación, puedes editarla desde tu área personal.
+                </p>
+              </div>
+            </motion.div>
           </div>
 
           <div className="space-y-6">
@@ -200,6 +228,13 @@ export default function CourseDetail() {
                     </div>
                   </div>
                 )}
+                <div className="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/30">
+                  <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Franja Flexible</div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🕒</span>
+                    <span className="text-[10px] font-bold text-white leading-snug">Tú eliges los días y horario al solicitar</span>
+                  </div>
+                </div>
               </div>
 
               <button 

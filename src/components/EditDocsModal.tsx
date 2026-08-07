@@ -1,13 +1,16 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { X, Check } from 'lucide-react';
-import { SCORING_CRITERIA } from '../lib/data';
+import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
 import { cn } from '../lib/utils';
+import ScheduleSlotPicker from './ScheduleSlotPicker';
 
 export default function EditDocsModal({ registration, course, onClose, onSuccess }: any) {
   const [formData, setFormData] = React.useState({
     criterias: registration.criterias || [],
-    files: registration.files || []
+    files: registration.files || [],
+    franja: registration.franja || '',
+    franjaLabel: registration.franjaLabel || ''
   });
   const [points, setPoints] = React.useState(registration.points || 0);
   const [loading, setLoading] = React.useState(false);
@@ -50,7 +53,7 @@ export default function EditDocsModal({ registration, course, onClose, onSuccess
       const res = await fetch(`/api/students/${registration.code}/docs`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ criterias: formData.criterias, files: formData.files, points })
+        body: JSON.stringify({ criterias: formData.criterias, files: formData.files, points, franja: formData.franja, franjaLabel: formData.franjaLabel })
       });
       if (res.ok) {
         onSuccess(await res.json());
@@ -155,6 +158,32 @@ export default function EditDocsModal({ registration, course, onClose, onSuccess
                     )}
                   </div>
                 ))}
+            </div>
+
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Franja de días</label>
+                <span className={cn(
+                  "text-[10px] font-black uppercase tracking-widest",
+                  formData.franja ? "text-emerald-500" : "text-slate-400"
+                )}>
+                  {formData.franja ? 'Seleccionada ✓' : 'Obligatorio'}
+                </span>
+              </div>
+              <ScheduleSlotPicker
+                value={formData.franja}
+                onChange={(id) => {
+                  const slot = getScheduleSlot(id);
+                  setFormData(prev => ({
+                    ...prev,
+                    franja: id,
+                    franjaLabel: slot ? scheduleSlotLabel(slot) : ''
+                  }));
+                }}
+              />
+              <p className="text-[10px] text-slate-400 font-medium ml-1 leading-relaxed">
+                Puedes cambiar la franja elegida mientras tu solicitud siga pendiente de validación.
+              </p>
             </div>
             
             <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200">

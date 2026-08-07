@@ -3,6 +3,7 @@ import confetti from 'canvas-confetti';
 import { useAuth } from '../lib/auth';
 import { Course } from '../components/CourseCard';
 import EditDocsModal from '../components/EditDocsModal';
+import { getScheduleSlot } from '../lib/data';
 import { motion } from 'motion/react';
 import { BookOpen, Calendar, Clock, CheckCircle2, AlertCircle, FileCheck, ShieldCheck, Download } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -205,6 +206,12 @@ export default function Perfil() {
                         {course?.title || `Curso #${reg.courseId}`}
                       </h3>
                       <p className="text-sm text-slate-500 font-medium mt-1">{course?.institution}</p>
+                      {reg.franjaLabel && (
+                        <div className="mt-2.5 inline-flex items-center gap-2 bg-primary/5 border border-primary/15 rounded-lg px-2.5 py-1">
+                          <span>{getScheduleSlot(reg.franja)?.emoji || '🕒'}</span>
+                          <span className="text-[10px] font-bold text-primary">{reg.franjaLabel}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 

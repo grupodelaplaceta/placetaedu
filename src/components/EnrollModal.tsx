@@ -2,9 +2,10 @@
 import React from 'react';
 import { X, CheckCircle2, ShieldCheck, AlertCircle, UploadCloud, FileCheck, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { SCORING_CRITERIA } from '../lib/data';
+import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
 import { type Course } from './CourseCard';
 import { cn } from '../lib/utils';
+import ScheduleSlotPicker from './ScheduleSlotPicker';
 import { useAuth } from '../lib/auth';
 import { generatePreEnrollmentPDF } from '../lib/pdfGenerator';
 
@@ -26,6 +27,8 @@ export default function EnrollModal({ course, onClose }: Props) {
     name: user?.nombre || user?.name || '',
     dni: user?.dni || '',
     email: user?.email || '',
+    franja: '',
+    franjaLabel: '',
     criterias: [] as string[],
     files: [] as { criteria: string, name: string }[]
   });
@@ -80,6 +83,11 @@ export default function EnrollModal({ course, onClose }: Props) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.franja) {
+      alert('Selecciona la franja de días en la que prefieres hacer el curso.');
+      return;
+    }
     
     try {
       const payload = {
@@ -330,6 +338,34 @@ export default function EnrollModal({ course, onClose }: Props) {
                     </div>
                   </div>
 
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <label className="text-xs font-bold text-slate-500 uppercase ml-1">Franja de días</label>
+                      <span className={cn(
+                        "text-[10px] font-black uppercase tracking-widest",
+                        formData.franja ? "text-emerald-500" : "text-slate-400"
+                      )}>
+                        {formData.franja ? 'Seleccionada ✓' : 'Obligatorio'}
+                      </span>
+                    </div>
+                    <ScheduleSlotPicker
+                      value={formData.franja}
+                      onChange={(id) => {
+                        const slot = getScheduleSlot(id);
+                        setFormData(prev => ({
+                          ...prev,
+                          franja: id,
+                          franjaLabel: slot ? scheduleSlotLabel(slot) : ''
+                        }));
+                      }}
+                    />
+                    <p className="text-[10px] text-slate-400 font-medium ml-1 leading-relaxed">
+                      {formData.franja
+                        ? 'Podremos confirmarte la plaza en esta franja según disponibilidad.'
+                        : 'Elige la franja que mejor encaje con tu disponibilidad. Podrás cambiarla antes de la validación.'}
+                    </p>
+                  </div>
+
                   <div className="bg-primary/10 rounded-2xl p-4 flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center font-black text-primary text-lg">
@@ -368,10 +404,20 @@ export default function EnrollModal({ course, onClose }: Props) {
                   <CheckCircle2 className="w-10 h-10 text-secondary" />
                 </div>
                 <h3 className="text-2xl font-black text-slate-900 mb-2">¡Solicitud Registrada!</h3>
-                <p className="text-sm text-slate-500 mb-8 max-w-sm">
+                <p className="text-sm text-slate-500 mb-6 max-w-sm">
                   Hemos recibido tu solicitud para el curso <strong>{course.title}</strong>. 
                   Guarda este código para consultar el estado.
                 </p>
+
+                {formData.franjaLabel && (
+                  <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl px-4 py-3 w-full mb-6">
+                    <span className="text-2xl">{getScheduleSlot(formData.franja)?.emoji || '🕒'}</span>
+                    <div className="text-left">
+                      <div className="text-[9px] font-black text-primary uppercase tracking-widest">Tu franja elegida</div>
+                      <div className="text-xs font-bold text-slate-700 leading-snug">{formData.franjaLabel}</div>
+                    </div>
+                  </div>
+                )}
 
                 <div className="bg-slate-50 border-2 border-dashed border-primary/20 rounded-2xl p-6 mb-8 w-full group relative overflow-hidden">
                   <div className="absolute top-0 right-0 p-2 cursor-pointer opacity-0 group-hover:opacity-100 transition-opacity">

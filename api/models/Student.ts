@@ -6,6 +6,8 @@ const studentSchema = new mongoose.Schema({
   email: { type: String, required: true },
   courseId: { type: Number, required: true },
   courseTitle: { type: String, required: true },
+  franja: { type: String },
+  franjaLabel: { type: String },
   criterias: [{ type: String }],
   files: [{
     criteria: String,
