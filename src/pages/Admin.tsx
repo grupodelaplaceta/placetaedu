@@ -77,6 +77,7 @@ export default function Admin() {
   });
   const [editingCourseId, setEditingCourseId] = React.useState<number | null>(null);
   const [copied, setCopied] = React.useState(false);
+  const [copiedCompletion, setCopiedCompletion] = React.useState(false);
   const [franjaDraft, setFranjaDraft] = React.useState('');
   const [franjaSaved, setFranjaSaved] = React.useState(false);
 
@@ -225,7 +226,6 @@ export default function Admin() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const [copiedCompletion, setCopiedCompletion] = React.useState(false);
   const copyCompletionEmail = () => {
     if (!selectedReg) return;
     const template = getCompletionEmailTemplate(selectedReg);
