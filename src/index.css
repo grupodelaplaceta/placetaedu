@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* ── Marca Grupo de La Placeta (Banco de La Placeta / BOP) ──
+     primary = GDLP_Primary · accent = #6427A1 (solicitado) */
+  --color-primary: #4D00FF;
+  --color-primary-light: #F2ECFF;
+  --color-primary-dark: #3A00D1;
+  --color-secondary: #6427A1;
+  --color-accent: #6427A1;
+  --color-accent-light: #EDE4F8;
+  --color-bg-soft: #F8F6FF;
+  --color-ink: #1B103B;
+
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+}
+
+@layer base {
+  body {
+    @apply bg-bg-soft text-ink antialiased;
+    font-family: var(--font-sans);
+  }
+}
+
+.glass-card {
+  @apply bg-white/80 backdrop-blur-md border border-white/20 shadow-xl shadow-primary/5;
+}
+
+.btn-primary {
+  @apply bg-primary text-white px-6 py-2.5 rounded-full font-semibold transition-all hover:bg-primary-dark hover:scale-105 active:scale-95 disabled:opacity-50;
+}
+
+.btn-secondary {
+  @apply bg-white text-primary border-2 border-primary/10 px-6 py-2.5 rounded-full font-semibold transition-all hover:border-primary/30 hover:bg-bg-soft;
+}
+
