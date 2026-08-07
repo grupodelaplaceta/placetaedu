@@ -1,5 +1,5 @@
 
-import { GraduationCap, Mail, Globe } from 'lucide-react';
+import { Mail, Globe } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
@@ -7,9 +7,8 @@ export default function Footer() {
     <footer className="bg-ink text-slate-300 py-12 px-4 mt-20">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center md:text-left">
         <div>
-          <div className="flex items-center gap-2 text-white font-extrabold text-xl mb-4 justify-center md:justify-start">
-            <GraduationCap className="w-8 h-8 text-primary" />
-            <span>Placeta<span className="text-accent">Edu</span></span>
+          <div className="flex items-center mb-4 justify-center md:justify-start">
+            <img src="/pledulogo.png" alt="PlacetaEdu" className="h-10 w-auto" />
           </div>
           <p className="text-sm leading-relaxed text-slate-400">
             Un programa social de Grupo de La Placeta (NIF: G27566900) para democratizar la educación de alta calidad.

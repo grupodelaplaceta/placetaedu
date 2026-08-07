@@ -2,16 +2,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* ── Marca Grupo de La Placeta (Banco de La Placeta / BOP) ──
-     primary = GDLP_Primary · accent = #6427A1 (solicitado) */
-  --color-primary: #4D00FF;
-  --color-primary-light: #F2ECFF;
-  --color-primary-dark: #3A00D1;
-  --color-secondary: #6427A1;
-  --color-accent: #6427A1;
-  --color-accent-light: #EDE4F8;
+  /* ── Paleta oficial PlacetaEdu (imgcolorpicker.org) ──
+     Púrpuras: #6321a5 · #6b31a5 · #733aad · #6b29a5
+     Violetas: #4a08ce · #4a08c5 · #4208ce
+     Acentos:  #de193a (rojo) · #debd6b (dorado) · #73b5c5 (azul) */
+  --color-primary: #6321A5;
+  --color-primary-dark: #4A08CE;
+  --color-primary-darker: #4208CE;
+  --color-primary-light: #F1EAFB;
+  --color-secondary: #6B31A5;
+  --color-accent: #DE193A;
+  --color-gold: #DEBD6B;
+  --color-teal: #73B5C5;
   --color-bg-soft: #F8F6FF;
-  --color-ink: #1B103B;
+  --color-ink: #2A1740;
 
   --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 

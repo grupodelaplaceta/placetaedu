@@ -38,11 +38,11 @@ interface Props {
 
 export default function CourseCard({ course, onEnroll }: Props) {
   const catStyles: Record<string, string> = {
-    tech: 'bg-blue-50 text-blue-600 border-blue-100',
-    data: 'bg-purple-50 text-purple-600 border-purple-100',
-    business: 'bg-emerald-50 text-emerald-600 border-emerald-100',
-    design: 'bg-pink-50 text-pink-600 border-pink-100',
-    idiomas: 'bg-amber-50 text-amber-600 border-amber-100',
+    tech: 'bg-[#eaf5f8] text-[#3f8fa3] border-[#d3e9ef]',        // azul #73b5c5
+    data: 'bg-[#f1eafb] text-[#6321a5] border-[#e2d4f5]',        // púrpura #6321a5
+    business: 'bg-[#faf3e2] text-[#b9973f] border-[#f0e2c0]',    // dorado #debd6b
+    design: 'bg-[#fdecef] text-[#de193a] border-[#f8d5dc]',      // rojo #de193a
+    idiomas: 'bg-[#efe6fb] text-[#733aad] border-[#dfcdf2]',     // púrpura #733aad
   };
 
   const isEnrollActive = React.useMemo(() => {

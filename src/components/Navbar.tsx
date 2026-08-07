@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { GraduationCap, Menu, X, LogIn, LogOut, User } from 'lucide-react';
+import { Menu, X, LogIn, LogOut, User } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useAuth } from '../lib/auth';
 
@@ -37,9 +37,8 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 bg-white border-b border-primary/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <Link to="/" className="flex items-center gap-2 text-primary font-extrabold text-xl tracking-tight">
-            <GraduationCap className="w-8 h-8" />
-            <span>Placeta<span className="text-secondary">Edu</span></span>
+          <Link to="/" className="flex items-center">
+            <img src="/pledulogo.png" alt="PlacetaEdu" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Nav */}
