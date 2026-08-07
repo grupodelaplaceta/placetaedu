@@ -20,6 +20,7 @@ import {
   BookOpen,
   Layers,
   CalendarCheck,
+  CalendarRange,
   EyeOff,
   Lock,
   Download,
@@ -31,9 +32,10 @@ import {
   Info
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { SCORING_CRITERIA, getScheduleSlot } from '../lib/data';
+import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
 import { type Course } from '../components/CourseCard';
 import { useAuth } from '../lib/auth';
+import ScheduleSlotPicker from '../components/ScheduleSlotPicker';
 import { generatePreEnrollmentPDF, generateEnrollmentPDF, getEnrollmentEmailTemplate, getCompletionEmailTemplate, generateCourseGroupReportPDF } from '../lib/pdfGenerator';
 
 export default function Admin() {
@@ -75,6 +77,8 @@ export default function Admin() {
   });
   const [editingCourseId, setEditingCourseId] = React.useState<number | null>(null);
   const [copied, setCopied] = React.useState(false);
+  const [franjaDraft, setFranjaDraft] = React.useState('');
+  const [franjaSaved, setFranjaSaved] = React.useState(false);
 
   const isAdmin = user && (
     user.email === 'malegre@laplaceta.org' ||
@@ -115,6 +119,11 @@ export default function Admin() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, [selectedReg, adminTab]);
+
+  React.useEffect(() => {
+    setFranjaDraft(selectedReg?.franja || '');
+    setFranjaSaved(false);
+  }, [selectedReg]);
 
   if (!isAdmin) {
     return (
@@ -180,6 +189,28 @@ export default function Admin() {
         const updated = await res.json();
         setRegistrations(prev => prev.map(r => r.code === selectedReg.code ? updated : r));
         setSelectedReg(updated);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleFranjaUpdate = async () => {
+    if (!selectedReg || !franjaDraft) return;
+    const slot = getScheduleSlot(franjaDraft);
+    if (!slot) return;
+    try {
+      const res = await fetch(`/api/students/${selectedReg.code}/status`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ franja: franjaDraft, franjaLabel: scheduleSlotLabel(slot) })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setRegistrations(prev => prev.map(r => r.code === selectedReg.code ? updated : r));
+        setSelectedReg(updated);
+        setFranjaSaved(true);
+        setTimeout(() => setFranjaSaved(false), 2500);
       }
     } catch (error) {
       console.error(error);
@@ -590,6 +621,27 @@ export default function Admin() {
                   </div>
 
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
+                    <div>
+                      <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1">
+                        <CalendarRange className="w-3 h-3" /> Franja de Días
+                      </div>
+                      <ScheduleSlotPicker value={franjaDraft} onChange={setFranjaDraft} compact />
+                      <div className="flex items-center gap-2 mt-3">
+                        <button
+                          type="button"
+                          onClick={handleFranjaUpdate}
+                          disabled={!franjaDraft || franjaDraft === (selectedReg?.franja || '')}
+                          className="flex-1 bg-primary text-white py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-primary-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          Guardar Franja
+                        </button>
+                        {franjaSaved && (
+                          <span className="text-[10px] font-black text-emerald-600 flex items-center gap-1 shrink-0">
+                            <Check className="w-3.5 h-3.5" /> Guardada
+                          </span>
+                        )}
+                      </div>
+                    </div>
                     <div>
                       <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1">
                         <Bookmark className="w-3 h-3" /> Nº Convocatoria

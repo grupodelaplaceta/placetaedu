@@ -151,7 +151,7 @@ router.post("/:code/report-finished", async (req, res) => {
 // Update registration status (Admin)
 router.patch("/:code/status", async (req, res) => {
   const { code } = req.params;
-  const { status, duration, certificateUrl, assignedAccount, assignedLicense, temporaryPassword, scholarshipStart, scholarshipEnd, callNumber, acquiredSkills, scholarshipOutcome, accountProvider } = req.body;
+  const { status, duration, certificateUrl, assignedAccount, assignedLicense, temporaryPassword, scholarshipStart, scholarshipEnd, callNumber, acquiredSkills, scholarshipOutcome, accountProvider, franja, franjaLabel } = req.body;
   
   try {
     const student = await StudentModel.findOne({ code } as any);
@@ -179,6 +179,8 @@ router.patch("/:code/status", async (req, res) => {
     if (scholarshipOutcome !== undefined) student.scholarshipOutcome = scholarshipOutcome;
     if (accountProvider !== undefined) student.accountProvider = accountProvider;
     if (callNumber !== undefined) student.callNumber = callNumber;
+    if (franja !== undefined) student.franja = franja;
+    if (franjaLabel !== undefined) student.franjaLabel = franjaLabel;
     
     if (status === 'validado' || status === 'matricula_pendiente') {
       student.set('files', []); 
