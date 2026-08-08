@@ -13,6 +13,7 @@ export interface ScheduleSlot {
 }
 
 export const SCHEDULE_SLOTS: ScheduleSlot[] = [
+  // ── Franjas alternas (compatibles con datos ya guardados) ──────────
   {
     id: 'manana_lmx',
     nombre: 'Mañanas',
@@ -49,6 +50,72 @@ export const SCHEDULE_SLOTS: ScheduleSlot[] = [
     chip: 'bg-[#debd6b]/15 text-[#b9973f] border-[#debd6b]/30',
     ring: 'border-[#b9973f] bg-[#debd6b]/10 shadow-[#debd6b]/20',
   },
+  // ── Días específicos (franjas de un día concreto) ───────────────────
+  {
+    id: 'lunes',
+    nombre: 'Lunes',
+    dias: 'Solo lunes',
+    hora: '09:00 – 13:00',
+    emoji: '📘',
+    chip: 'bg-[#73b5c5]/15 text-[#3f8fa3] border-[#73b5c5]/25',
+    ring: 'border-[#73b5c5] bg-[#73b5c5]/5 shadow-[#73b5c5]/20',
+  },
+  {
+    id: 'martes',
+    nombre: 'Martes',
+    dias: 'Solo martes',
+    hora: '09:00 – 13:00',
+    emoji: '📗',
+    chip: 'bg-[#73b5c5]/15 text-[#3f8fa3] border-[#73b5c5]/25',
+    ring: 'border-[#73b5c5] bg-[#73b5c5]/5 shadow-[#73b5c5]/20',
+  },
+  {
+    id: 'miercoles',
+    nombre: 'Miércoles',
+    dias: 'Solo miércoles',
+    hora: '09:00 – 13:00',
+    emoji: '📙',
+    chip: 'bg-[#73b5c5]/15 text-[#3f8fa3] border-[#73b5c5]/25',
+    ring: 'border-[#73b5c5] bg-[#73b5c5]/5 shadow-[#73b5c5]/20',
+  },
+  {
+    id: 'jueves',
+    nombre: 'Jueves',
+    dias: 'Solo jueves',
+    hora: '09:00 – 13:00',
+    emoji: '📔',
+    chip: 'bg-[#73b5c5]/15 text-[#3f8fa3] border-[#73b5c5]/25',
+    ring: 'border-[#73b5c5] bg-[#73b5c5]/5 shadow-[#73b5c5]/20',
+  },
+  {
+    id: 'viernes',
+    nombre: 'Viernes',
+    dias: 'Solo viernes',
+    hora: '09:00 – 13:00',
+    emoji: '📕',
+    chip: 'bg-[#73b5c5]/15 text-[#3f8fa3] border-[#73b5c5]/25',
+    ring: 'border-[#73b5c5] bg-[#73b5c5]/5 shadow-[#73b5c5]/20',
+  },
+  // ── Semana completa ────────────────────────────────────────────────
+  {
+    id: 'semana_manana',
+    nombre: 'Lunes a Viernes',
+    dias: 'Toda la semana',
+    hora: '09:00 – 11:00',
+    emoji: '🗓️',
+    chip: 'bg-[#6321a5]/10 text-[#6321a5] border-[#6321a5]/20',
+    ring: 'border-[#6321a5] bg-[#6321a5]/5 shadow-[#6321a5]/20',
+  },
+  {
+    id: 'semana_tarde',
+    nombre: 'Lunes a Viernes',
+    dias: 'Toda la semana',
+    hora: '17:00 – 19:00',
+    emoji: '🗓️',
+    chip: 'bg-[#4a08ce]/10 text-[#4a08ce] border-[#4a08ce]/20',
+    ring: 'border-[#4a08ce] bg-[#4a08ce]/5 shadow-[#4a08ce]/20',
+  },
+  // ── Fines de semana ────────────────────────────────────────────────
   {
     id: 'finde',
     nombre: 'Fines de Semana',
@@ -58,6 +125,16 @@ export const SCHEDULE_SLOTS: ScheduleSlot[] = [
     chip: 'bg-[#de193a]/10 text-[#de193a] border-[#de193a]/20',
     ring: 'border-[#de193a] bg-[#de193a]/5 shadow-[#de193a]/20',
   },
+  {
+    id: 'domingo',
+    nombre: 'Domingo',
+    dias: 'Solo domingo',
+    hora: '10:00 – 13:00',
+    emoji: '📆',
+    chip: 'bg-[#debd6b]/15 text-[#b9973f] border-[#debd6b]/30',
+    ring: 'border-[#b9973f] bg-[#debd6b]/10 shadow-[#debd6b]/20',
+  },
+  // ── Flexible ───────────────────────────────────────────────────────
   {
     id: 'flexible',
     nombre: 'Horario Flexible',
