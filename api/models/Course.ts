@@ -18,6 +18,7 @@ const courseSchema = new mongoose.Schema({
   callNumber: { type: String, default: '1/2025' },
   courseStart: { type: String },
   courseEnd: { type: String },
+  diasDisponibles: [{ type: String }], // días concretos (YYYY-MM-DD) para elegir fecha
   learningPoints: [{ type: String }],
   requirements: [{ type: String }],
   fullDesc: { type: String },

@@ -2,10 +2,10 @@
 import React from 'react';
 import { X, CheckCircle2, ShieldCheck, AlertCircle, UploadCloud, FileCheck, Download } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
-import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
+import { SCORING_CRITERIA, formatFechaLarga } from '../lib/data';
 import { type Course } from './CourseCard';
 import { cn } from '../lib/utils';
-import ScheduleSlotPicker from './ScheduleSlotPicker';
+import DateSlotPicker from './DateSlotPicker';
 import { useAuth } from '../lib/auth';
 import { generatePreEnrollmentPDF } from '../lib/pdfGenerator';
 
@@ -340,29 +340,27 @@ export default function EnrollModal({ course, onClose }: Props) {
 
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <label className="text-xs font-bold text-slate-500 uppercase ml-1">Franja de días</label>
+                      <label className="text-xs font-bold text-slate-500 uppercase ml-1">Día específico</label>
                       <span className={cn(
                         "text-[10px] font-black uppercase tracking-widest",
                         formData.franja ? "text-emerald-500" : "text-slate-400"
                       )}>
-                        {formData.franja ? 'Seleccionada ✓' : 'Obligatorio'}
+                        {formData.franja ? 'Seleccionado ✓' : 'Obligatorio'}
                       </span>
                     </div>
-                    <ScheduleSlotPicker
+                    <DateSlotPicker
+                      dates={course.diasDisponibles || []}
                       value={formData.franja}
-                      onChange={(id) => {
-                        const slot = getScheduleSlot(id);
-                        setFormData(prev => ({
-                          ...prev,
-                          franja: id,
-                          franjaLabel: slot ? scheduleSlotLabel(slot) : ''
-                        }));
-                      }}
+                      onChange={(iso) => setFormData(prev => ({
+                        ...prev,
+                        franja: iso,
+                        franjaLabel: formatFechaLarga(iso)
+                      }))}
                     />
                     <p className="text-[10px] text-slate-400 font-medium ml-1 leading-relaxed">
                       {formData.franja
-                        ? 'Podremos confirmarte la plaza en esta franja según disponibilidad.'
-                        : 'Elige la franja que mejor encaje con tu disponibilidad. Podrás cambiarla antes de la validación.'}
+                        ? `Tu día elegido: ${formatFechaLarga(formData.franja)}. Podremos confirmarlo según disponibilidad.`
+                        : 'Elige el día concreto en el que prefieres hacer el curso.'}
                     </p>
                   </div>
 
@@ -411,9 +409,9 @@ export default function EnrollModal({ course, onClose }: Props) {
 
                 {formData.franjaLabel && (
                   <div className="flex items-center gap-3 bg-primary/5 border border-primary/20 rounded-2xl px-4 py-3 w-full mb-6">
-                    <span className="text-2xl">{getScheduleSlot(formData.franja)?.emoji || '🕒'}</span>
+                    <span className="text-2xl">📅</span>
                     <div className="text-left">
-                      <div className="text-[9px] font-black text-primary uppercase tracking-widest">Tu franja elegida</div>
+                      <div className="text-[9px] font-black text-primary uppercase tracking-widest">Tu día elegido</div>
                       <div className="text-xs font-bold text-slate-700 leading-snug">{formData.franjaLabel}</div>
                     </div>
                   </div>

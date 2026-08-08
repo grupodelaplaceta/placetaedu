@@ -26,6 +26,7 @@ export interface Course {
   callNumber?: string;
   courseStart?: string;
   courseEnd?: string;
+  diasDisponibles?: string[];
   syllabusUrl?: string;
   badgeUrl?: string;
 }

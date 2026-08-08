@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { ArrowLeft, Clock, GraduationCap, Users, ShieldCheck, CheckCircle2, Bookmark, CalendarRange } from 'lucide-react';
 import { type Course } from '../components/CourseCard';
 import EnrollModal from '../components/EnrollModal';
-import ScheduleSlotPicker from '../components/ScheduleSlotPicker';
+import DateSlotPicker from '../components/DateSlotPicker';
 
 export default function CourseDetail() {
   const { id } = useParams();
@@ -177,18 +177,18 @@ export default function CourseDetail() {
                   <CalendarRange className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black text-slate-900 leading-tight">Elige tu franja de días</h3>
-                  <p className="text-xs text-slate-500 font-medium mt-0.5">Disponibilidad flexible · lista establecida</p>
+                  <h3 className="text-xl font-black text-slate-900 leading-tight">Elige tu día</h3>
+                  <p className="text-xs text-slate-500 font-medium mt-0.5">Días concretos disponibles para este curso</p>
                 </div>
               </div>
               <p className="text-sm text-slate-500 font-medium leading-relaxed mt-5 mb-5">
-                Tú decides cuándo cursar. Al enviar tu solicitud podrás marcar la franja que mejor encaje con tu día a día:
+                Al solicitar la beca elegirás el día concreto en el que quieres hacer el curso:
               </p>
-              <ScheduleSlotPicker value="" onChange={() => {}} preview />
+              <DateSlotPicker dates={course.diasDisponibles || []} value="" onChange={() => {}} preview />
               <div className="mt-5 flex items-start gap-3 bg-amber-50/60 border border-amber-100 rounded-2xl p-4">
                 <span className="text-lg">💡</span>
                 <p className="text-[11px] text-amber-800 font-medium leading-relaxed">
-                  Tu franja preferida se confirma junto a la plaza según disponibilidad. Si necesitas cambiarla antes de la validación, puedes editarla desde tu área personal.
+                  Tu día elegido se confirma junto a la plaza según disponibilidad. Si necesitas cambiarlo antes de la validación, puedes editarlo desde tu área personal.
                 </p>
               </div>
             </motion.div>
@@ -229,10 +229,10 @@ export default function CourseDetail() {
                   </div>
                 )}
                 <div className="p-4 bg-slate-800/50 rounded-2xl border border-slate-700/30">
-                  <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Franja Flexible</div>
+                  <div className="text-[9px] font-black text-slate-500 uppercase tracking-widest mb-2">Día Concreto</div>
                   <div className="flex items-center gap-2">
-                    <span className="text-base">🕒</span>
-                    <span className="text-[10px] font-bold text-white leading-snug">Tú eliges los días y horario al solicitar</span>
+                    <span className="text-base">📅</span>
+                    <span className="text-[10px] font-bold text-white leading-snug">Tú eliges el día exacto al solicitar</span>
                   </div>
                 </div>
               </div>

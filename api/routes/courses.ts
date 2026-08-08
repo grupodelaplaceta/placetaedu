@@ -31,7 +31,7 @@ router.post("/", async (req, res) => {
     title, desc, duration, level, institution, plazas, 
     enrollStart, enrollEnd, emoji, cat, catLabel,
     provider, callNumber, courseStart, courseEnd,
-    learningPoints, requirements, fullDesc
+    learningPoints, requirements, fullDesc, diasDisponibles
   } = req.body;
   
   if (!title || !desc || !duration || !level || !institution || !plazas) {
@@ -62,7 +62,8 @@ router.post("/", async (req, res) => {
       courseEnd,
       learningPoints,
       requirements,
-      fullDesc
+      fullDesc,
+      diasDisponibles
     });
 
     await newCourse.save();
@@ -82,7 +83,7 @@ router.patch("/:id", async (req, res) => {
     if (!course) return res.status(404).json({ error: "Course not found" });
 
     // Update allowed fields
-    const allowedFields = ['title', 'desc', 'duration', 'level', 'institution', 'plazas', 'enrollStart', 'enrollEnd', 'emoji', 'cat', 'catLabel', 'provider', 'callNumber', 'courseStart', 'courseEnd', 'syllabusUrl', 'badgeUrl', 'learningPoints', 'requirements', 'fullDesc'];
+    const allowedFields = ['title', 'desc', 'duration', 'level', 'institution', 'plazas', 'enrollStart', 'enrollEnd', 'emoji', 'cat', 'catLabel', 'provider', 'callNumber', 'courseStart', 'courseEnd', 'syllabusUrl', 'badgeUrl', 'learningPoints', 'requirements', 'fullDesc', 'diasDisponibles'];
     
     for (const key of Object.keys(updates)) {
       if (allowedFields.includes(key)) {

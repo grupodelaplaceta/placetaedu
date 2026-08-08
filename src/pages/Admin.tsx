@@ -32,10 +32,10 @@ import {
   Info
 } from 'lucide-react';
 import { cn } from '../lib/utils';
-import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
+import { SCORING_CRITERIA, formatFechaLarga } from '../lib/data';
 import { type Course } from '../components/CourseCard';
 import { useAuth } from '../lib/auth';
-import ScheduleSlotPicker from '../components/ScheduleSlotPicker';
+import DateSlotPicker from '../components/DateSlotPicker';
 import { generatePreEnrollmentPDF, generateEnrollmentPDF, getEnrollmentEmailTemplate, getCompletionEmailTemplate, generateCourseGroupReportPDF } from '../lib/pdfGenerator';
 
 export default function Admin() {
@@ -73,7 +73,8 @@ export default function Admin() {
     callNumber: 'UNED-2025-01',
     courseStart: '',
     courseEnd: '',
-    badgeUrl: ''
+    badgeUrl: '',
+    diasDisponibles: [] as string[]
   });
   const [editingCourseId, setEditingCourseId] = React.useState<number | null>(null);
   const [copied, setCopied] = React.useState(false);
@@ -198,13 +199,11 @@ export default function Admin() {
 
   const handleFranjaUpdate = async () => {
     if (!selectedReg || !franjaDraft) return;
-    const slot = getScheduleSlot(franjaDraft);
-    if (!slot) return;
     try {
       const res = await fetch(`/api/students/${selectedReg.code}/status`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ franja: franjaDraft, franjaLabel: scheduleSlotLabel(slot) })
+        body: JSON.stringify({ franja: franjaDraft, franjaLabel: formatFechaLarga(franjaDraft) })
       });
       if (res.ok) {
         const updated = await res.json();
@@ -267,7 +266,7 @@ export default function Admin() {
         body: JSON.stringify(newCourse)
       });
       if (res.ok) {
-        setNewCourse({ title: '', desc: '', duration: '', level: '', institution: 'Cisco Networking Academy', plazas: 20, badgeUrl: '' });
+        setNewCourse({ title: '', desc: '', duration: '', level: '', institution: 'Cisco Networking Academy', plazas: 20, badgeUrl: '', diasDisponibles: [] });
         setEditingCourseId(null);
         loadData();
       }
@@ -472,8 +471,8 @@ export default function Admin() {
                       {reg.franjaLabel && (
                         <>
                           <span className="text-primary flex items-center gap-1 normal-case font-black">
-                            <span>{getScheduleSlot(reg.franja)?.emoji || '🕒'}</span>
-                            <span className="truncate max-w-[140px]">{reg.franjaLabel.split('·')[0]}</span>
+                            <span>📅</span>
+                            <span className="truncate max-w-[140px]">{reg.franjaLabel}</span>
                           </span>
                         </>
                       )}
@@ -581,12 +580,10 @@ export default function Admin() {
 
                   {selectedReg.franjaLabel && (
                     <div className="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex items-center gap-3">
-                      <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl">
-                        {getScheduleSlot(selectedReg.franja)?.emoji || '🕒'}
-                      </span>
+                      <span className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-xl">📅</span>
                       <div className="min-w-0">
-                        <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Franja de Días</div>
-                        <div className="text-xs font-bold text-slate-900 leading-snug">{selectedReg.franjaLabel}</div>
+                        <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-0.5">Día elegido</div>
+                        <div className="text-xs font-bold text-slate-900 leading-snug capitalize">{selectedReg.franjaLabel}</div>
                       </div>
                     </div>
                   )}
@@ -623,9 +620,14 @@ export default function Admin() {
                   <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 space-y-4">
                     <div>
                       <div className="text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1">
-                        <CalendarRange className="w-3 h-3" /> Franja de Días
+                        <CalendarRange className="w-3 h-3" /> Día específico
                       </div>
-                      <ScheduleSlotPicker value={franjaDraft} onChange={setFranjaDraft} compact />
+                      <DateSlotPicker
+                        dates={(courses.find(c => c.id === selectedReg?.courseId)?.diasDisponibles) || []}
+                        value={franjaDraft}
+                        onChange={setFranjaDraft}
+                        compact
+                      />
                       <div className="flex items-center gap-2 mt-3">
                         <button
                           type="button"
@@ -633,7 +635,7 @@ export default function Admin() {
                           disabled={!franjaDraft || franjaDraft === (selectedReg?.franja || '')}
                           className="flex-1 bg-primary text-white py-2 rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-primary-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                         >
-                          Guardar Franja
+                          Guardar Día
                         </button>
                         {franjaSaved && (
                           <span className="text-[10px] font-black text-emerald-600 flex items-center gap-1 shrink-0">
@@ -1064,10 +1066,15 @@ export default function Admin() {
                   <input required type="datetime-local" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm" value={newCourse.enrollEnd ? newCourse.enrollEnd.slice(0, 16) : ''} onChange={e => setNewCourse({...newCourse, enrollEnd: new Date(e.target.value).toISOString()})} />
                 </div>
               </div>
+              <div>
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Días concretos disponibles (fechas YYYY-MM-DD separadas por coma)</label>
+                <input type="text" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm" value={(newCourse.diasDisponibles || []).join(', ')} onChange={e => setNewCourse({...newCourse, diasDisponibles: e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean)})} placeholder="2026-08-12, 2026-08-19, 2026-08-26" />
+                <p className="text-[10px] text-slate-400 font-medium mt-1">Estos son los días concretos que el alumno podrá elegir al solicitar la beca.</p>
+              </div>
               <div className="flex gap-2">
                 <button type="submit" className="w-full btn-primary py-4 mt-4">{editingCourseId ? 'Actualizar Curso' : 'Crear Curso'}</button>
                 {editingCourseId && (
-                  <button type="button" onClick={() => { setEditingCourseId(null); setNewCourse({ title: '', desc: '', duration: '', level: '', institution: 'Cisco Networking Academy', plazas: 20, callNumber: 'UNED-2025-01', courseStart: '', courseEnd: '', badgeUrl: '' }); }} className="btn-secondary py-4 mt-4 px-6">Cancelar</button>
+                  <button type="button" onClick={() => { setEditingCourseId(null); setNewCourse({ title: '', desc: '', duration: '', level: '', institution: 'Cisco Networking Academy', plazas: 20, callNumber: 'UNED-2025-01', courseStart: '', courseEnd: '', badgeUrl: '', diasDisponibles: [] }); }} className="btn-secondary py-4 mt-4 px-6">Cancelar</button>
                 )}
               </div>
             </form>

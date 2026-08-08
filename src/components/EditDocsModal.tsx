@@ -1,9 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { X, Check } from 'lucide-react';
-import { SCORING_CRITERIA, getScheduleSlot, scheduleSlotLabel } from '../lib/data';
+import { SCORING_CRITERIA, formatFechaLarga } from '../lib/data';
 import { cn } from '../lib/utils';
-import ScheduleSlotPicker from './ScheduleSlotPicker';
+import DateSlotPicker from './DateSlotPicker';
 
 export default function EditDocsModal({ registration, course, onClose, onSuccess }: any) {
   const [formData, setFormData] = React.useState({
@@ -162,27 +162,27 @@ export default function EditDocsModal({ registration, course, onClose, onSuccess
 
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Franja de días</label>
+                <label className="text-xs font-bold text-slate-500 uppercase ml-1">Día específico</label>
                 <span className={cn(
                   "text-[10px] font-black uppercase tracking-widest",
                   formData.franja ? "text-emerald-500" : "text-slate-400"
                 )}>
-                  {formData.franja ? 'Seleccionada ✓' : 'Obligatorio'}
+                  {formData.franja ? 'Seleccionado ✓' : 'Obligatorio'}
                 </span>
               </div>
-              <ScheduleSlotPicker
+              <DateSlotPicker
+                dates={course?.diasDisponibles || []}
                 value={formData.franja}
-                onChange={(id) => {
-                  const slot = getScheduleSlot(id);
-                  setFormData(prev => ({
-                    ...prev,
-                    franja: id,
-                    franjaLabel: slot ? scheduleSlotLabel(slot) : ''
-                  }));
-                }}
+                onChange={(iso) => setFormData(prev => ({
+                  ...prev,
+                  franja: iso,
+                  franjaLabel: formatFechaLarga(iso)
+                }))}
               />
               <p className="text-[10px] text-slate-400 font-medium ml-1 leading-relaxed">
-                Puedes cambiar la franja elegida mientras tu solicitud siga pendiente de validación.
+                {formData.franja
+                  ? `Tu día elegido: ${formatFechaLarga(formData.franja)}.`
+                  : 'Puedes cambiar el día concreto mientras tu solicitud siga pendiente de validación.'}
               </p>
             </div>
             
