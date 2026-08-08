@@ -9,6 +9,7 @@ import Tracking from './pages/Tracking';
 import Legal from './pages/Legal';
 import Admin from './pages/Admin';
 import Bases from './pages/Bases';
+import Normativa from './pages/Normativa';
 import Login from './pages/Login';
 import Perfil from './pages/Perfil';
 import CourseDetail from './pages/CourseDetail';
@@ -57,6 +58,7 @@ export default function App() {
               <Route path="/cursos/:id" element={<CourseDetail />} />
               <Route path="/calendario" element={<Calendar />} />
               <Route path="/bases" element={<Bases />} />
+              <Route path="/normativa" element={<Normativa />} />
               <Route path="/seguimiento" element={<Tracking />} />
               <Route path="/legal" element={<Legal />} />
               <Route path="/admin" element={<Admin />} />

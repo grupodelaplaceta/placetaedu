@@ -27,6 +27,7 @@ export default function Footer() {
 
         <div className="flex flex-col gap-3">
           <h4 className="text-white font-bold mb-2">Legal</h4>
+          <Link to="/normativa" className="text-sm hover:text-white transition-colors">Normativa del programa</Link>
           <Link to="/legal" className="text-sm hover:text-white transition-colors">Política de Privacidad</Link>
           <Link to="/legal" className="text-sm hover:text-white transition-colors">Términos y Condiciones</Link>
           <Link to="/legal" className="text-sm hover:text-white transition-colors">Cookies</Link>

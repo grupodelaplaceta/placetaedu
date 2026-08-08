@@ -13,6 +13,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Inicio', href: '/' },
     { name: 'Bases', href: '/bases' },
+    { name: 'Normativa', href: '/normativa' },
     { name: 'Calendario Lectivo', href: '/calendario' },
     { name: 'Cursos', href: '/cursos' },
     { name: 'Seguimiento', href: '/seguimiento' },
